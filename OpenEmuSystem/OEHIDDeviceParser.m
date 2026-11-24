@@ -35,6 +35,7 @@
 #import "OEPS3HIDDeviceHandler.h"
 #import "OEPS4HIDDeviceHandler.h"
 #import "OEPS4BluetoothHIDDeviceHandler.h"
+#import "OEPS5DualSenseHIDDeviceHandler.h"
 #import "OEXBox360HIDDeviceHander.h"
 #import "OEWiimoteHIDDeviceHandler.h"
 #import "OESwitchProControllerHIDDeviceHandler.h"
@@ -83,10 +84,15 @@ NS_ASSUME_NONNULL_BEGIN
         return [OEWiimoteHIDDeviceHandler class];
     else if([OEPS3HIDDeviceHandler canHandleDevice:aDevice])
         return [OEPS3HIDDeviceHandler class];
-    /* Must come before OEPS4HIDDeviceHandler, which claims any device named
-     * "Wireless Controller" - including a DualShock 4 over Bluetooth. */
+    /* The Bluetooth handlers for the DualShock 4 and the DualSense must come
+     * before OEPS4HIDDeviceHandler, which claims any device whose name starts
+     * with "Wireless Controller" - including a DualShock 4 over Bluetooth and
+     * some DualSense firmware. Each matches only its own Sony product IDs, so
+     * their relative order does not matter. */
     else if([OEPS4BluetoothHIDDeviceHandler canHandleDevice:aDevice])
         return [OEPS4BluetoothHIDDeviceHandler class];
+    else if([OEPS5DualSenseHIDDeviceHandler canHandleDevice:aDevice])
+        return [OEPS5DualSenseHIDDeviceHandler class];
     else if([OEPS4HIDDeviceHandler canHandleDevice:aDevice])
         return [OEPS4HIDDeviceHandler class];
     else if([OEXBox360HIDDeviceHander canHandleDevice:aDevice])
